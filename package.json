@@ -1,0 +1,19 @@
+{
+  "name": "jose-portfolio",
+  "packageManager": "yarn@4.12.0",
+  "scripts": {
+    "build:css": "tailwindcss -i ./assets/css/tailwind.css -o ./dist/tailwind.css --minify",
+    "build:alpine": "cp node_modules/alpinejs/dist/cdn.min.js dist/alpine.min.js",
+    "build:js": "cp ./assets/js/app.js ./dist/app.js",
+    "build": "yarn build:css && yarn build:alpine && yarn build:js",
+    "watch:css": "tailwindcss -i ./assets/css/tailwind.css -o ./dist/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "3"
+  },
+  "dependencies": {
+    "alpinejs": "^3.15.3"
+  }
+}
