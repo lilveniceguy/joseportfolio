@@ -23,3 +23,21 @@ function jose_portfolio_get_sections() {
     // Return the stored sections from WordPress
     return $sections;
 }
+
+/**
+ * Output JSON-encoded data (similar to Sage's @json directive)
+ * Usage: <?php json($data); ?> instead of <?php echo json_encode($data); ?>
+ * 
+ * @param mixed $data Data to encode
+ * @param int $flags Optional JSON encoding flags (default: JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT for HTML safety)
+ * @return void
+ */
+if (!function_exists('json')) {
+    function json($data, $flags = null) {
+        if ($flags === null) {
+            // Default flags for safe HTML attribute output
+            $flags = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE;
+        }
+        echo json_encode($data, $flags);
+    }
+}
