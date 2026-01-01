@@ -2,7 +2,7 @@ name: Deploy Theme to Server
 
 on:
   push:
-    branches: [ master ]  # or [ main, master ]
+    branches: [ master ] # or [ main, master ]
 
 jobs:
   deploy:
@@ -27,16 +27,31 @@ jobs:
       - name: Build assets
         run: yarn build
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /var/www/html/wp-content/themes/jose-portfolio/
-          exclude: |
-            **/.git**
-            **/node_modules/**
-            **/.yarn/**
-            yarn.lock
-            package.json
+      - name: Deploy via rsync over SSH
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PORT: ${{ secrets.SSH_PORT }} # optional, default 22
+          REMOTE_DIR: /var/www/html/wp-content/themes/jose-portfolio/
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rsync
+
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Trust host key (prevents interactive prompt)
+          ssh-keyscan -p ${SSH_PORT:-22} -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+          # Rsync theme files to server
+          rsync -az --delete \
+            -e "ssh -p ${SSH_PORT:-22}" \
+            --exclude ".git/" \
+            --exclude "node_modules/" \
+            --exclude ".yarn/" \
+            --exclude ".github/" \
+            --exclude ".env" \
+            --exclude "*.map" \
+            ./ "$SSH_USER@$SSH_HOST:$REMOTE_DIR"
