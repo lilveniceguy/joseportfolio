@@ -2,7 +2,7 @@ name: Deploy Theme to Server
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master ]  # or [ main, master ]
 
 jobs:
   deploy:
@@ -15,8 +15,14 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Enable Corepack + Yarn 4
+        run: |
+          corepack enable
+          corepack prepare yarn@4.12.0 --activate
+          yarn --version
+
       - name: Install Yarn dependencies
-        run: yarn install
+        run: yarn install --immutable
 
       - name: Build assets
         run: yarn build
@@ -27,11 +33,10 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /var/www/html/wp-content/themes/jose-portfolio/   # Adjust this! e.g., public_html/wp-content/themes/jose-portfolio/
+          server-dir: /var/www/html/wp-content/themes/jose-portfolio/
           exclude: |
             **/.git**
             **/node_modules/**
             **/.yarn/**
             yarn.lock
             package.json
-            # Add more if needed (e.g., .gitignore, src folders)
