@@ -1,6 +1,6 @@
 <?php if (!defined('ABSPATH')) exit; ?>
 
-<div class="p-6 md:p-12 text-center flex-shrink-0">
+<div class="pt-4 pb-2 text-center flex-shrink-0">
   <div class="grid grid-cols-3 gap-3 md:gap-5 max-w-md mx-auto mb-8">
     <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-surface-700 to-surface-800 shadow-lg"></div>
     <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-surface-700 to-surface-800 shadow-lg"></div>

@@ -13,19 +13,20 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('jose-tailwind', $uri . '/dist/tailwind.css', [], filemtime($tailwind));
   }
 
-  // Alpine (local)
-  $alpine = $dir . '/dist/alpine.min.js';
-  if (file_exists($alpine)) {
-    wp_enqueue_script('jose-alpine', $uri . '/dist/alpine.min.js', [], filemtime($alpine), true);
-  }
-
-  // App JS (Alpine store)
+  // App JS (Alpine store) - load FIRST to register store before Alpine initializes
   $app = $dir . '/dist/app.js';
   if (file_exists($app)) {
-    wp_enqueue_script('jose-app', $uri . '/dist/app.js', ['jose-alpine'], filemtime($app), true);
+    // Load in head so store registration happens before Alpine processes DOM
+    wp_enqueue_script('jose-app', $uri . '/dist/app.js', [], filemtime($app), false);
 
     // Inject PHP config into window.JOSE_PORTFOLIO
     $config = jose_portfolio_get_config();
     wp_localize_script('jose-app', 'JOSE_PORTFOLIO', $config);
+  }
+
+  // Alpine (local) - load after app.js so store is already registered
+  $alpine = $dir . '/dist/alpine.min.js';
+  if (file_exists($alpine)) {
+    wp_enqueue_script('jose-alpine', $uri . '/dist/alpine.min.js', [], filemtime($alpine), true);
   }
 });

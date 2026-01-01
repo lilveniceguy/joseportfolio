@@ -10,14 +10,13 @@
     :class="$store.portfolio.menuOpen ? 'scale-[0.15] opacity-60 origin-top' : ''"
   >
     <?php get_template_part('template-parts/app/topbar'); ?>
-    <?php get_template_part('template-parts/app/album-grid'); ?>
 
     <main class="flex-1 overflow-y-auto px-6 md:px-12 pb-6">
       <div class="max-w-4xl mx-auto">
         <?php get_template_part('template-parts/sections/home'); ?>
         <?php 
         // Only include sections that exist
-        $sections = ['jobs', 'skills', 'education', 'certificates', 'contact'];
+        $sections = jose_portfolio_get_sections();
         foreach ($sections as $section) {
           $file = get_template_directory() . '/template-parts/sections/' . $section . '.php';
           if (file_exists($file)) {

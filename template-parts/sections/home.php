@@ -1,5 +1,6 @@
 <?php if (!defined('ABSPATH')) exit; ?>
-<section x-show="$store.portfolio.currentSection === 'home'" style="display:none;" class="min-h-[calc(100vh-400px)] flex flex-col items-center justify-center py-8 md:py-12">
+<?php get_template_part('template-parts/app/album-grid'); ?>
+<section x-show="$store.portfolio.currentSection === 'home'" style="display:none;" class="mt-4 flex flex-col items-center justify-center">
   <div class="text-center w-full max-w-2xl mx-auto px-4">
     <!-- Circular graphic with gradient border -->
     <div class="w-32 h-32 md:w-40 md:h-40 mx-auto mb-6 md:mb-8 relative">
@@ -22,17 +23,4 @@
         </div>
       </div>
     </div>
-
-    <!-- White box with placeholder text -->
-    <div class="bg-white text-surface-950 px-6 py-3 md:py-4 rounded-lg mb-6 mx-auto max-w-md">
-      <p class="text-sm md:text-base font-medium">Claude content</p>
-    </div>
-
-    <!-- Home title -->
-    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-text-strong mb-4 md:mb-6">Home</h1>
-
-    <!-- Placeholder text -->
-    <p class="text-text-muted text-sm md:text-base mb-1">Content for this section would appear here</p>
-    <p class="text-text-faint text-xs md:text-sm">(PHP renders actual content based on route)</p>
-  </div>
 </section>
