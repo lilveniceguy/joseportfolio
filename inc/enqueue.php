@@ -1,8 +1,6 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-require_once get_template_directory() . '/inc/config.php';
-
 add_action('wp_enqueue_scripts', function () {
   $dir = get_stylesheet_directory();
   $uri = get_stylesheet_directory_uri();

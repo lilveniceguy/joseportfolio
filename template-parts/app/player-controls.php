@@ -1,9 +1,27 @@
-<?php if (!defined('ABSPATH')) exit; ?>
+<?php if (!defined('ABSPATH')) exit; 
+
+// Get default section label from PHP config
+$config = jose_portfolio_get_config();
+$default_section = $config['defaultSection'];
+$default_item = null;
+foreach ($config['menuItems'] as $item) {
+  if ($item['id'] === $default_section) {
+    $default_item = $item;
+    break;
+  }
+}
+if (!$default_item && !empty($config['menuItems'])) {
+  $default_item = $config['menuItems'][0];
+}
+$default_label = $default_item ? $default_item['label'] : '';
+?>
 
 <section class="bg-surface-950/60 backdrop-blur-sm px-6 md:px-8 py-5 md:py-6 border-t border-border flex-shrink-0">
   <div class="text-center mb-4 md:mb-5">
     <h3 class="text-text-strong text-lg md:text-xl font-semibold uppercase tracking-wider"
-        x-text="$store.portfolio.currentItem()?.label || ''"></h3>
+        x-text="$store.portfolio.currentItem()?.label || '<?php echo esc_js($default_label); ?>'">
+      <?php echo esc_html($default_label); ?>
+    </h3>
     <p class="text-text-faint text-xs tracking-wide">Current Section</p>
   </div>
 
